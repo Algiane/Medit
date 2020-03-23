@@ -145,7 +145,7 @@ typedef Camera * pCamera;
 typedef struct sparam {
   float     back[4],line[4],edge[4],sunpos[4],clip[6];
   float     cm,dpi,coeff,cumtim,cumpertime,maxtime,timdep,pertime,dt;
-  float     eyesep,linewidth,isowidth,pointsize;
+  float     eyesep,linewidth,edgewidth,isowidth,pointsize;
   short     xi,yi,xs,ys;
   int       nbmat;
   char      pscolor[10];
