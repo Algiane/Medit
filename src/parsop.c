@@ -34,9 +34,12 @@ int saveMeditFile(char *file,pScene sc) {
   fprintf(out,"\n#  Assign background color\n");
   fprintf(out,"BackgroundColor\n%f %f %f\n",
 	  sc->par.back[0],sc->par.back[1],sc->par.back[2]);
-  if ( sc->par.linc ) 
+  if ( sc->par.linc ) {
     fprintf(out,"LineColor\n%f %f %f\n",
 	    sc->par.line[0],sc->par.line[1],sc->par.line[2]);
+    fprintf(out,"LineWidth\n%f\n",sc->par.linewidth);
+    fprintf(out,"EdgeWidth\n%f\n",sc->par.edgewidth);
+  }
 
   if ( sc->mode == HIDDEN )
     fprintf(out,"\nRenderMode\nhidden\n");
@@ -120,6 +123,7 @@ void iniopt(pScene sc,pMesh mesh) {
   sc->par.sunp  =  0;
   sc->par.linc  =  0;
   sc->par.linewidth = mesh->dim==3 ? 3 : 2;
+  sc->par.edgewidth = 1;
   sc->par.isowidth  = 1;
   sc->par.pointsize = 3.0;
 
@@ -232,6 +236,11 @@ int parsop(pScene sc,pMesh mesh) {
     else if ( !strcmp(key,"linewidth") ) {
       fscanf(in,"%f",&r);
       sc->par.linewidth = max(1.0,min(10.0,r));
+      sc->par.linc = 1;
+    }
+    else if ( !strcmp(key,"edgewidth") ) {
+      fscanf(in,"%f",&r);
+      sc->par.edgewidth = max(1.0,min(10.0,r));
       sc->par.linc = 1;
     }
     else if ( !strcmp(key,"isowidth") ) {

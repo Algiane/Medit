@@ -113,7 +113,7 @@ static void drawList(pScene sc,int clip,int map) {
   if ( ddebug ) printf("drawList %p %d %d\n",sc,clip,map);
   if ( mesh->dim == 2 && !elev ) glDisable(GL_DEPTH_TEST);
 
-  glLineWidth(1.0);
+  glLineWidth(sc->par.edgewidth);
   if ( clip ) {
     if ( map ) {
       if ( sc->cmlist[LTets] ) glCallList(sc->cmlist[LTets]);
