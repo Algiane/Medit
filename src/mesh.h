@@ -19,21 +19,21 @@ typedef unsigned short uShort;
 typedef struct spoint {
   double    c[3];
   int       tmp,mark;
-  short     ref;
+  int       ref;
   char      tag,clip,flag;
 } Point;
 typedef Point     * pPoint;
 
 typedef struct striangle {
   int     v[3],nxt,mark,cpt;
-  short   ref;
+  int     ref;
   char    clip;
 } Triangle;
 typedef Triangle  * pTriangle;
 
 typedef struct striangle2 {
   int     v[6],nxt,cpt;
-  short   ref;
+  int     ref;
   uShort  mark;
   char    clip;
 } Triangle2;
@@ -41,28 +41,29 @@ typedef Triangle2  * pTriangle2;
 
 typedef struct squad {
   int     v[4],nxt;
-  short   ref;
+  int     ref;
   char    clip;
 } Quad;
 typedef Quad * pQuad;
 
 typedef struct edge {
   int     v[2];
-  short   ref;
+  int     ref;
   char    tag;
 } Edge;
 typedef Edge * pEdge;
 
 typedef struct stetra {
   int     v[4],nxt,mark,cpt;
-  short   ref;
+  int     ref;
   char    clip;
 } Tetra;
 typedef Tetra * pTetra;
 
 typedef struct shexa {
   int     v[8],nxt,mark;
-  short   ref,cpt;
+  int     ref;
+  short   cpt;
   char    clip;
 } Hexa;
 typedef Hexa * pHexa;
