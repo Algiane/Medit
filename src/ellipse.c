@@ -39,7 +39,10 @@ void drawEllipsoid(pScene sc,pMesh mesh,int typel,int k) {
     for (j=0; j<6; j++) m[j] = ps->m[j];
 
     iord = eigenv(1,m,lambda,v);
-    if ( !iord )  return;
+    if ( !iord )  {
+      printf(" Unable to compute eigenvalues.\n");
+      return;
+    }
 		lambda[0] = fabs(lambda[0]);
 		lambda[1] = fabs(lambda[1]);
 		lambda[2] = fabs(lambda[2]);

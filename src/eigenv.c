@@ -3,8 +3,8 @@
 #include <math.h>
 
 /* seeking 1.e-05 accuracy */
-#define  EPSD           1.e-15
-#define  EPSD2          1.e-200
+#define  EPSD           1.e-13
+#define  EPSD2          1.e-10
 #define  EPS6           5.e-06
 #define  EPS            1.e-06
 #define  EPSX2          2.e-06
@@ -67,7 +67,7 @@ static int newton3(double p[4],double x[3]) {
       fx = d + x[2]*(c+x[2]*(b+x[2]));
       if ( fabs(fx) > EPSD2 ) {
 #ifdef DDEBUG
-        fprintf(stderr,"  ## ERR 9100, newton3: fx= %E\n",fx);
+        fprintf(stderr,"%s:%d:  ## ERR 9100, newton3: fx= %E\n",__FILE__,__LINE__,fx);
 #endif
         return(0);
       }
@@ -83,7 +83,7 @@ static int newton3(double p[4],double x[3]) {
       fx = d + x[2]*(c+x[2]*(b+x[2]));
       if ( fabs(fx) > EPSD2 ) {
 #ifdef DDEBUG
-        fprintf(stderr,"  ## ERR 9100, newton3: fx= %E\n",fx);
+        fprintf(stderr,"%s:%d:  ## ERR 9100, newton3: fx= %E\n",__FILE__,__LINE__,fx);
 #endif
         return(0);
       }
@@ -101,7 +101,7 @@ static int newton3(double p[4],double x[3]) {
     fx = d + x[0]*(c+x[0]*(b+x[0]));
     if ( fabs(fx) > EPSD2 ) {
 #ifdef DDEBUG
-      fprintf(stderr,"  ## ERR 9100, newton3: fx= %E\n",fx);
+      fprintf(stderr,"%s:%d:  ## ERR 9100, newton3: fx= %E\n",__FILE__,__LINE__,fx);
 #endif
       return(0);
     }
@@ -110,7 +110,7 @@ static int newton3(double p[4],double x[3]) {
   
   else {
 #ifdef DDEBUG
-    fprintf(stderr,"  ## ERR 9101, newton3: no real roots\n");
+    fprintf(stderr,"%s:%d:  ## ERR 9101, newton3: no real roots\n",__FILE__,__LINE__);
 #endif
     return(0);
   }
@@ -169,7 +169,7 @@ static int newton3(double p[4],double x[3]) {
   x[1] = 0.5 * (-db+delta);
   x[2] = 0.5 * (-db-delta);
   
-#ifdef DDEBUG
+//#ifdef DDEBUG
     /* check for root accuracy */
     fx = d + x[1]*(c+x[1]*(b+x[1]));
     if ( fabs(fx) > EPSD2 ) {
@@ -181,7 +181,7 @@ static int newton3(double p[4],double x[3]) {
       fprintf(stderr,"  ## ERR 9104, newton3: fx= %E  x= %E\n",fx,x[2]);
       return(0);
     }
-#endif
+//#endif
 
   return(n);
 }
@@ -297,7 +297,9 @@ int eigenv(int symmat,double *mat,double lambda[3],double v[3][3]) {
 
   /* solve polynomial (find roots using newton) */
   n = newton3(p,lambda);
-  if ( n <= 0 )  return(0);
+  if ( n <= 0 ) {
+    return(0);
+  }
 
   /* compute eigenvectors:
      an eigenvalue belong to orthogonal of Im(A-lambda*Id) */
