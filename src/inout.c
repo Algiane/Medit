@@ -682,6 +682,15 @@ int loadSol(pMesh mesh,char *filename,int numsol) {
       }
       key = GmfSolAtHexahedra;
     }
+    else if ( mesh->nt ) {
+      nel = GmfStatKwd(inm,GmfSolAtTriangles,&type,&size,typtab);
+      if ( nel && nel != mesh->nt ) {
+        fprintf(stderr,"  %%%% Wrong number %d.\n",nel);
+        GmfCloseMesh(inm);
+        return(0);
+      }
+      key = GmfSolAtTriangles;
+    }
   }
   if ( !nel )  return(1);
 
