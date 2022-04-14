@@ -794,7 +794,10 @@ GLuint pickingScene(pScene sc,int x,int y,int ident) {
   int           k;
   unsigned int  item;
 
-  dlist   = 0;  
+  x*=scale;
+  y*=scale;
+
+  dlist   = 0;
   refitem = 0;
   refmat  = -1;
   mesh    = cv.mesh[sc->idmesh];

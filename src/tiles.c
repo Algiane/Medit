@@ -130,7 +130,7 @@ int imgTiling(pScene sc,char *data,char key) {
       finlarg = deblarg + sc->par.xs * tw / imgWidth;
 
       /* set viewport to tilesize (with border) */
-      glViewport(0,0,tw+2*border,th+2*border);
+      glViewport(0,0,scale*(tw+2*border),scale*(th+2*border));
 
       /* current matrix */
       glGetIntegerv(GL_MATRIX_MODE,&matmode);
@@ -224,7 +224,7 @@ int imgTiling(pScene sc,char *data,char key) {
   tiling = 0;
   
   /* restore viewport */
-  glViewport(viewport[0],viewport[1],viewport[2],viewport[3]);
+  glViewport(viewport[0],viewport[1],scale*viewport[2],scale*viewport[3]);
   glDrawBuffer(GL_FRONT | GL_BACK);
 
   farclip(GL_TRUE);

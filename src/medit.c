@@ -20,6 +20,8 @@ int       menu,amenu,fmenu,femenu,vmenu,mmenu,smenu;
 int       clmenu,cmenu,vwmenu,txmenu,trmenu;
 int       animdep,animfin;
 int       fieldidx;
+float     scale=1; // for retina h-dpi screen
+
 
 static void excfun(int sigid) {
   fprintf(stdout,"\n Unexpected error:");  fflush(stdout);
