@@ -131,7 +131,7 @@ int loadMesh(pMesh mesh) {
   GmfGotoKwd(inm,GmfTrianglesP2);
   for (k=1; k<=mesh->nt2; k++) {
     pt2 = &mesh->tria2[k];
-    GmfGetLin(inm,GmfTriangles,&pt2->v[0],&pt2->v[1],&pt2->v[2],&pt2->v[3],pt2->v[4],pt2->v[5],&ref);
+    GmfGetLin(inm,GmfTrianglesP2,&pt2->v[0],&pt2->v[1],&pt2->v[2],&pt2->v[3],&pt2->v[4],&pt2->v[5],&ref);
     pt2->ref  = ref & 0x7fff;
     for (i=0; i<6; i++) {    
       if ( pt2->v[i] < 1 || pt2->v[i] > mesh->np ) {
