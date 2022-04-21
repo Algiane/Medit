@@ -314,6 +314,11 @@ static void drawPoint(pScene sc,pMesh mesh,int k) {
 }
 
 
+static double norm(float *m) {
+  return(sqrt(m[0]*m[0] + m[1]*m[1] + m[2]*m[2]));
+}
+
+
 static void infoData(pScene sc,pMesh mesh,int k,int typel) {
   pSolution  ps;
 
@@ -322,9 +327,10 @@ static void infoData(pScene sc,pMesh mesh,int k,int typel) {
   if ( mesh->nfield == 1 )
     fprintf(stdout,"  Data (scalar): %f\n",ps->bb);
   else if ( mesh->nfield == mesh->dim ) {
-    fprintf(stdout,"  Data (vector): %f %f",ps->m[0],ps->m[1]);
-    if (mesh->dim == 3 )  fprintf(stdout," %f",ps->m[2]); 
-    fprintf(stdout,"\n");
+    if ( mesh->dim == 2 )
+      fprintf(stdout,"  Data (vector): %f  %f  |v|= \n",ps->m[0],ps->m[1],norm(ps->m));
+    else 
+      fprintf(stdout,"  Data (vector): %f %f %f   |v|= %f\n",ps->m[0],ps->m[1],ps->m[2],norm(ps->m)); 
   }
   else if ( mesh->dim == 2 && mesh->nfield == 3 ) {
     fprintf(stdout,"  Data (tensor): %f %f %f\n",
@@ -821,7 +827,7 @@ GLuint pickingScene(pScene sc,int x,int y,int ident) {
 
   /* process color */
   glReadBuffer(GL_BACK_LEFT);
-  glReadPixels(x,viewport[3]-y,1,1,
+  glReadPixels(scale*x,viewport[3]-scale*y,1,1,
                GL_RGBA,GL_UNSIGNED_BYTE,(void *)pixel);
   glDrawBuffer(GL_BACK_LEFT);
 
@@ -862,7 +868,7 @@ GLuint pickingScene(pScene sc,int x,int y,int ident) {
   /* peculiar case: vertex */
   if ( refitem > 0 && ident == LPoint ) {
     if ( mesh->ne ) {
-      refitem = closestPoint(sc,mesh,x,y,refitem,reftype);
+      refitem = closestPoint(sc,mesh,scale*x,scale*y,refitem,reftype);
       reftype = LPoint;
     }
   }
