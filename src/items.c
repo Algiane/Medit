@@ -51,6 +51,15 @@ void drawRulers(pScene sc) {
 void drawAxis(pScene sc,int dim) {
   pMesh  mesh;
 
+  GLvoid *font_style;
+
+  if ( scale==2 ) {
+   font_style = GLUT_BITMAP_HELVETICA_18;
+  }
+  else {
+   font_style = GLUT_BITMAP_HELVETICA_12;
+  }
+
   /* default */
   if ( ddebug ) printf("draw axis\n");
   mesh = cv.mesh[sc->idmesh];
@@ -81,9 +90,9 @@ void drawAxis(pScene sc,int dim) {
     /*glColor3f(0.0f,1.0f,0.0f);*/
     glColor3f(1.-sc->par.back[0],1.0-sc->par.back[1],1.0-sc->par.back[2]);
     glRasterPos3f(1.02, 0.0, 0.0);
-    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12,'x');
+    glutBitmapCharacter(font_style,'x');
     glRasterPos3f(0.0, 1.02, 0.0);
-    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12,'y');
+    glutBitmapCharacter(font_style,'y');
   }
   else {
     glBegin(GL_LINE_STRIP);
@@ -120,11 +129,11 @@ void drawAxis(pScene sc,int dim) {
     /*glColor3f(0.0f,1.0f,0.0f);*/
     glColor3f(1.-sc->par.back[0],1.0-sc->par.back[1],1.0-sc->par.back[2]);
     glRasterPos3f(1.02, 0.0, 0.0);
-    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12,'x');
+    glutBitmapCharacter(font_style,'x');
     glRasterPos3f(0.0, 1.02, 0.0);
-    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12,'y');
+    glutBitmapCharacter(font_style,'y');
     glRasterPos3f(0.0, 0.0, 1.02);
-    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12,'z');
+    glutBitmapCharacter(font_style,'z');
   }
   
   glLineWidth(1.0);

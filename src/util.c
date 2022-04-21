@@ -18,7 +18,14 @@ static GLfloat IdMatrix[16] = {
 
 /* set font style and size */
 void setFont(char* name,int size) {
-  GLvoid *font_style = GLUT_BITMAP_HELVETICA_10;
+  GLvoid *font_style;
+
+  if ( scale==2 ) {
+   font_style = GLUT_BITMAP_HELVETICA_18;
+  }
+  else {
+   font_style = GLUT_BITMAP_HELVETICA_10;
+  }
 
   if ( !strcmp(name,"helvetica") ) {
     if (size == 12)
@@ -35,8 +42,9 @@ void setFont(char* name,int size) {
   else if (strcmp(name, "8x13") == 0)
     font_style = GLUT_BITMAP_8_BY_13;
   */
-  else if (strcmp(name, "9x15") == 0)
+  else if (strcmp(name, "9x15") == 0) {
     font_style = GLUT_BITMAP_9_BY_15;
+  }
 }
 
 /* display string format at pos(x,y) */
@@ -56,6 +64,14 @@ void drwstr(GLuint x,GLuint y,char* format, ...) {
 void output2(GLfloat x,GLfloat y,char *format,...) {
   va_list  args;
   char    *s,buffer[255];
+  GLvoid *font_style;
+
+  if ( scale==2 ) {
+   font_style = GLUT_BITMAP_HELVETICA_18;
+  }
+  else {
+   font_style = GLUT_BITMAP_HELVETICA_10;
+  }
 
   /*strcpy(myerror.procname,"output2");*/
   va_start(args,format);
@@ -66,13 +82,21 @@ void output2(GLfloat x,GLfloat y,char *format,...) {
   for (s=buffer; *s; s++) {
     /*glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_10,*s);*/
     /*glutBitmapCharacter(font_style,*s);*/
-    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10,*s);
+    glutBitmapCharacter(font_style,*s);
   }
 }
 
 void output3(GLfloat x,GLfloat y,GLfloat z,char *format,...) {
   va_list args;
   char buffer[255], *s;
+  GLvoid *font_style;
+
+  if ( scale==2 ) {
+   font_style = GLUT_BITMAP_HELVETICA_18;
+  }
+  else {
+   font_style = GLUT_BITMAP_HELVETICA_10;
+  }
 
   /*strcpy(myerror.procname,"output3");*/
   va_start(args,format);
@@ -80,7 +104,7 @@ void output3(GLfloat x,GLfloat y,GLfloat z,char *format,...) {
   va_end(args);
   glRasterPos3f(x,y,z);
   for (s=buffer; *s; s++)
-    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10,*s);
+    glutBitmapCharacter(font_style,*s);
 }
 
 /* color converter */
