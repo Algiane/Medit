@@ -46,7 +46,7 @@ static int newton3(double p[4],double x[3]) {
   epsd  = db*db*EPSD2;
 
   /* inflexion (f'(x)=0, x=-b/2a) */
-  x1 = -db / 6.0;
+  x1 = -db / 6.0f;
 
   n = 1;
   if ( delta > epsd ) {
