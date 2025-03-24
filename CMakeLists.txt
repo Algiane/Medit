@@ -1,93 +1,98 @@
+cmake_minimum_required(VERSION 3.21)
+project(Medit LANGUAGES C)
 
-cmake_minimum_required(VERSION 2.8)
-set(CMAKE_CXX_FLAGS   "-w")
-set(CMAKE_C_FLAGS   "-w")
-add_definitions("-w")
-set(CMAKE_MACOSX_RPATH 1)
-set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-set(CMAKE_INSTALL_RPATH "$ENV{HOME}/lib")
-set(CMAKE_INSTALL_NAME_DIR "$ENV{HOME}/lib")
-#INCLUDE_DIRECTORIES(  "$ENV{HOME}/include")
-#LINK_DIRECTORIES(     "$ENV{HOME}/lib")
-#SET(CMAKE_SKIP_BUILD_RPATH  TRUE)
+set(medit_sources 
+src/animat.c
+src/bbfile.c
+src/camera.c
+src/cenrad.c
+src/chrono.c
+src/clip.c
+src/clipvol.c
+src/critip.c
+src/cube.c
+src/dlists.c
+src/eigenv.c
+src/ellipse.c
+src/geometry.c
+src/gisfil.c
+src/hash.c
+src/ilists.c
+src/image.c
+src/inmsh2.c
+src/inout.c
+src/items.c
+src/keyboard.c
+src/libmesh5.c
+src/listnum.c
+src/material.c
+src/memory.c
+src/menus.c
+src/mesh.c
+src/mlists.c
+src/morphing.c
+src/mouse.c
+src/normal.c
+src/param.c
+src/parsar.c
+src/parsop.c
+src/particle.c
+src/path.c
+src/persp.c
+src/picking.c
+src/psfile.c
+src/scene.c
+src/scissor.c
+src/sftcpy.c
+src/status.c
+src/stream.c
+src/tiles.c
+src/transform.c
+src/util.c
+src/vector.c
+src/view.c
+src/zaldy1.c
+src/zaldy2.c
+)
 
+set(medit_headers 
+src/chrono.h
+src/eigenv.h
+src/extern.h
+src/grafic.h
+src/image.h
+src/libmesh5.h
+src/medit.h
+src/memory.h
+src/mesh.h
+src/sproto.h
+)
 
+find_package(GLUT REQUIRED)
+find_package(OpenGL REQUIRED GLES3)
+if(NOT TARGET OpenGL::GLU)
+  find_library(GLU_LIB GLU)
+  if(NOT GLU_LIB)
+    message(ERROR "GLU NOT FOUND !")
+  endif()
+  add_library(OpenGL::GLU UNKNOWN IMPORTED)
+  set_target_properties(SCOTCH::scotch PROPERTIES
+    IMPORTED_LOCATION ${GLU_LIB}
+  )
+endif()
+add_library(Medit3D ${medit_sources} ${medit_headers})
+target_link_libraries(Medit3D PUBLIC OpenGL::OpenGL GLUT::GLUT OpenGL::GLU m)
 
-macro(DATE RESULT)
-    if(WIN32)
-        execute_process(COMMAND "cmd" " /C date /T" OUTPUT_VARIABLE ${RESULT} OUTPUT_STRIP_TRAILING_WHITESPACE)
-        string(REGEX REPLACE "(..)/(..)/(....).*" "\\3-\\2-\\1" ${RESULT} ${${RESULT}})
-    elseif(UNIX)
-        execute_process(COMMAND "date" "+%Y-%m-%d" OUTPUT_VARIABLE ${RESULT} OUTPUT_STRIP_TRAILING_WHITESPACE)
-    else()
-        message(SEND_ERROR "Unable to detect date")
-        set(${RESULT} UNKNOWN)
-    endif()
-endmacro()
-macro(TIME RESULT)
-    if(WIN32)
-        execute_process(COMMAND "cmd" " /C echo %TIME%" OUTPUT_VARIABLE ${RESULT} OUTPUT_STRIP_TRAILING_WHITESPACE)
-        string(REGEX REPLACE "(..:..:..),(..)" "\\1" ${RESULT} ${${RESULT}})
-    elseif(UNIX)
-        execute_process(COMMAND "date" "+%H:%M:%S" OUTPUT_VARIABLE ${RESULT} OUTPUT_STRIP_TRAILING_WHITESPACE)
-    else()
-        message(SEND_ERROR "Unable to detect time")
-        set(${RESULT} UNKNOWN)
-    endif()
-endmacro()
+# use GNU standard for file hierarchy installation system
+include(GNUInstallDirs)
+install(TARGETS Medit3D 
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    )
 
+install(FILES ${medit_headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
-
-project(libMedit)
-#string(TIMESTAMP time "%Y-%m-%d %H:%M:%S")
-DATE(day)
-TIME(hour)
-file(WRITE src/compil.date "#define COMPIL  \"${day} ${hour}\"")
-file(                  GLOB_RECURSE sources src/*.c)
-file(                  GLOB_RECURSE hea src/*.h)
-
-
-IF(APPLE)
-	add_library(           Medit3D STATIC ${sources})
-	INCLUDE_DIRECTORIES ( /System/Library/Frameworks )
-	FIND_LIBRARY(COCOA_LIBRARY Cocoa)
-	FIND_LIBRARY(GLUT_LIBRARY GLUT )
-	FIND_LIBRARY(OpenGL_LIBRARY OpenGL )
-	MARK_AS_ADVANCED (COCOA_LIBRARY
-		GLUT_LIBRARY
-	OpenGL_LIBRARY)
-	SET(GL_LIBS ${COCOA_LIBRARY} ${GLUT_LIBRARY} ${OpenGL_LIBRARY})
-
-	target_link_libraries( Medit3D ${GL_LIBS})
-
-elseif(UNIX)
-	add_library(           Medit3D SHARED ${sources})
-	find_package(GLUT REQUIRED)
-	include_directories(${GLUT_INCLUDE_DIRS})
-	link_directories(${GLUT_LIBRARY_DIRS})
-	add_definitions(${GLUT_DEFINITIONS})
-	if(NOT GLUT_FOUND)
-		message(ERROR " GLUT not found!")
-	endif(NOT GLUT_FOUND)
-	find_package(OpenGL REQUIRED)
-	include_directories(${OpenGL_INCLUDE_DIRS})
-	link_directories(${OpenGL_LIBRARY_DIRS})
-	add_definitions(${OpenGL_DEFINITIONS})
-	if(NOT OPENGL_FOUND)
-		message(ERROR " OPENGL not found!")
-	endif(NOT OPENGL_FOUND)
-	set(GL_LIBS ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} )
-
-	target_link_libraries( Medit3D ${GL_LIBS})
-	INSTALL(               TARGETS Medit3D LIBRARY  DESTINATION "$ENV{HOME}/lib")
-	INSTALL(               FILES ${hea} DESTINATION "$ENV{HOME}/include")
-
-ENDIF()
-
-target_link_libraries( Medit3D ${GL_LIBS})
-
-
-project(medit)
-add_executable(        medit src/medit.c)
-target_link_libraries( medit Medit3D)# ${GL_LIBS})
-INSTALL(               TARGETS medit RUNTIME DESTINATION "$ENV{HOME}/bin")
+add_executable(medit src/medit.c)
+target_link_libraries(medit PUBLIC Medit3D)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+install(TARGETS medit DESTINATION ${CMAKE_INSTALL_BINDIR})

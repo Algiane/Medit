@@ -13,13 +13,8 @@ In a terminal, clone this repository:
 
    ` cd Medit `
 
-   then create build directory and compile the project using cmake
    ```
-   mkdir build
-   cd build
-   cmake ..
-   make
-   make install
+   cmake -B build -DCMAKE_INSTALL_PREFIX=/path/to/install && make -C build install
    ```
 
 #### Usage
