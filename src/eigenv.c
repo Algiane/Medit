@@ -169,7 +169,7 @@ static int newton3(double p[4],double x[3]) {
   x[1] = 0.5 * (-db+delta);
   x[2] = 0.5 * (-db-delta);
 
-//#ifdef DDEBUG
+#ifdef DDEBUG
     /* check for root accuracy */
     fx = d + x[1]*(c+x[1]*(b+x[1]));
     if ( fabs(fx) > EPSD2 ) {
@@ -181,7 +181,7 @@ static int newton3(double p[4],double x[3]) {
       fprintf(stderr,"  ## ERR 9104, newton3: fx= %E  x= %E\n",fx,x[2]);
       return(0);
     }
-//#endif
+#endif
 
   return(n);
 }
